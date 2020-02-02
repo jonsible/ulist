@@ -1,0 +1,38 @@
+---
+- name: Init user_list
+  set_fact:
+    ulist: {}
+
+- name: Getting passwd info
+  getent:
+    database: passwd
+
+- name: Get UID_MIN
+  shell: |
+    set -o pipefail
+    grep -E '^UID_MIN' /etc/login.defs | sed -E "s/^.*\s([0-9]*)$/\1/"
+  args:
+    executable: /bin/bash
+  register: uid_min
+  changed_when: false
+
+- name: Get UID_MAX
+  shell: |
+    set -o pipefail
+    grep -E '^UID_MAX' /etc/login.defs | sed -E "s/^.*\s([0-9]*)$/\1/"
+  args:
+    executable: /bin/bash
+  register: uid_max
+  changed_when: false
+
+- name: set fact
+  set_fact:
+    # yamllint disable-line rule:line-length
+    ulist: '{{ ulist | combine({ item.key: { "uid": item.value[1], "gid": item.value[2], "home": item.value[4], "shell": item.value[5] }}) }}'
+  when:
+    - item.value[1]|int >= uid_min.stdout|int
+    - item.value[1]|int <= uid_max.stdout|int
+    - item.value[4]
+  loop: "{{ lookup('dict', getent_passwd) }}"
+  loop_control:
+    label: "{{ item.key }}"

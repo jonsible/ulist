@@ -1,0 +1,34 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Creating user
+      become: true
+      user:
+        name: "{{ item }}"
+        shell: /bin/bash
+      loop: ['jscherrer', 'user1', 'user2', 'svc_user', 'svc_user2']
+
+    - include_role:
+        name: ulist
+        tasks_from: set_ulist.yml
+
+    - debug:
+        var: ulist
+
+    - include_role:
+        name: ulist
+        tasks_from: process_ulist.yml
+
+    - debug:
+        var: ulist
+
+    - include_role:
+        name: ulist
+        tasks_from: process_ulist.yml
+      vars:
+        filter: ['svc_.*2', 'jscherr.*', 'user.']
+        strip: ['user.']
+
+    - debug:
+        var: ulist

@@ -1,0 +1,12 @@
+---
+- name: Include filter-plugins
+  include_role:
+    name: jonsible.filter-plugins
+
+- name: Filter users
+  set_fact:
+    ulist: "{{ ulist | dict_filter_keys(filter) }}"
+
+- name: Strip users
+  set_fact:
+    ulist: "{{ ulist | dict_strip_keys(strip) }}"
