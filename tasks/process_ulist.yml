@@ -1,7 +1,7 @@
 ---
 - name: Include filter-plugins
   include_role:
-    name: jonsible.filter-plugins
+    name: jonsible.filter_plugins
 
 - name: Filter users
   set_fact:
