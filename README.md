@@ -77,7 +77,7 @@ Use jonsible.ulist with the default settings
 
 ## License
 
-MIT
+GPL-3.0-or-later
 
 ## Author Information
 

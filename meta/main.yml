@@ -5,7 +5,7 @@ galaxy_info:
   description: |
     Role to select users on a system based on specific filters
 
-  license: MIT
+  license: GPL-3.0-or-later
 
   min_ansible_version: 2.3
 
