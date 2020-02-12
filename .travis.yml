@@ -19,6 +19,10 @@ install:
   - pip install --upgrade setuptools
   - pip install molecule
   - pip install molecule[docker]
+  - WDIR=$(pwd)
+  - cd /opt
+  - curl -L https://networkgenomics.com/try/mitogen-0.2.9.tar.gz | tar -xz
+  - cd $WDIR
 
 script:
   - molecule test

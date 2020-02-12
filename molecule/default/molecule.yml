@@ -7,27 +7,28 @@ lint:
   name: yamllint
 platforms:
   - name: centos-7
-    image: centos:7
-    privileged: true
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    command: "/sbin/init"
+    image: jonsible/centos:7
     tty: true
     env:
       container: docker
   - name: debian-stretch
-    image: debian:stretch
-    privileged: true
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    command: "/lib/systemd/systemd"
+    image: jonsible/debian:stretch
     tty: true
     env:
       container: docker
       LC_ALL: en_US.utf8
       DEBIAN_FRONTEND: noninteractive
+  - name: archlinux-latest
+    image: jonsible/archlinux:latest
+    env:
+      container: docker
 provisioner:
   name: ansible
+  env:
+    # yamllint disable-line rule:line-length
+    ANSIBLE_STRATEGY_PLUGINS: /opt/mitogen-0.2.9/ansible_mitogen/plugins/strategy
+    ANSIBLE_STRATEGY: mitogen_linear
+    ANSIBLE_PIPELINING: true
   lint:
     name: ansible-lint
 verifier:
