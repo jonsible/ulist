@@ -17,8 +17,11 @@ before_install:
 install:
   - sudo apt-get -y install python-pip libssl-dev
   - pip install --upgrade setuptools
-  - pip install molecule
-  - pip install molecule[docker]
+  - pip install ansible-lint
+  - pip install flake8
+  - pip install testinfra
+  - pip install --pre molecule
+  - pip install --pre molecule[docker]
   - WDIR=$(pwd)
   - cd /opt
   - curl -L https://networkgenomics.com/try/mitogen-0.2.9.tar.gz | tar -xz
